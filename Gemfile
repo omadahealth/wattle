@@ -40,6 +40,8 @@ gem 'highcharts-rails'
 gem 'moment_ago'
 gem 'libv8', '=3.16.14.7'
 
+gem 'capistrano'
+
 gem 'puma'
 gem 'newrelic_rpm'
 
