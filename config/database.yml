@@ -19,6 +19,9 @@ test:
   timeout: 5000
 
 production:
-  url: <%= ENV['DATABASE_URL'] %>
+  host: <%= Apohypaton::Kv.load_secret('postgresql/host', false) %>
+  database: <%= Apohypaton::Kv.load_secret('postgresql/name', false) %>
+  username: <%= Apohypaton::Kv.load_secret('postgresql/user', false) %>
+  password: <%= Apohypaton::Kv.load_secret('postgresql/password', false) %>
   pool: 26
 
