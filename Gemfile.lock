@@ -68,6 +68,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    apohypaton (0.1.2)
+      diplomat (~> 0.14.0)
     arel (6.0.3)
     awesome_print (1.6.1)
     axiom-types (0.1.1)
@@ -129,6 +131,9 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
+    diplomat (0.14.0)
+      faraday (~> 0.9)
+      json (~> 1.8)
     dotenv (2.0.2)
     dotenv-rails (2.0.2)
       dotenv (= 2.0.2)
@@ -415,6 +420,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apohypaton
   awesome_print
   backbone-on-rails
   better_errors
@@ -478,4 +484,4 @@ DEPENDENCIES
   wat_catcher
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

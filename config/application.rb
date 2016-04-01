@@ -5,6 +5,14 @@ require 'rails/all'
 # Assets should be precompiled for production (so we don't need the gems loaded then)
 Bundler.require(*Rails.groups(assets: %w(development test)))
 
+# Configure secrets management gem
+Apohypaton.configure do |conf|
+  conf.url = URI("consul://consul.omadahealth.net:443")
+  conf.chroot = "wattle/#{Rails.env.downcase}"
+  conf.token = ENV['WATTLE_CONSUL_TOKEN']
+  conf.enabled = (Rails.env.development? || Rails.env.test?) ? false : true
+end
+
 module Wattle
   class ConfigureMailer < Rails::Railtie
     initializer "configure_mailer.set_config", after: "secrets.load" do |app|
@@ -43,6 +51,8 @@ module Wattle
     config.logger = Logviously.configure(config)
 
     ::Sidekiq.configure_server do |config|
+      redis = Apohypaton::Kv.load_secret('redis', true)
+      config.redis = { url: "redis://#{redis.host}:#{redis.port}/#{redis.db}" }
       config.server_middleware do |chain|
         chain.add ::WatCatcher::SidekiqMiddleware
       end
