@@ -7,7 +7,7 @@ Bundler.require(*Rails.groups(assets: %w(development test)))
 
 # Configure secrets management gem
 Apohypaton.configure do |conf|
-  conf.url = URI("consul://consul.omadahealth.net:443")
+  conf.url = URI(ENV['APOHYPATON_CONSUL_URL'] || "consul://consul.omadahealth.net:443")
   conf.chroot = "wattle/#{Rails.env.downcase}"
   conf.token = ENV['WATTLE_CONSUL_TOKEN']
   conf.enabled = (Rails.env.development? || Rails.env.test?) ? false : true
@@ -55,6 +55,9 @@ module Wattle
 
     config.autoload_paths += %W(#{config.root}/app/workers/concerns)
     config.logger = Logviously.configure(config)
+
+    # config.kassiejones.enabled = (Rails.env.development? || Rails.env.test?) ? false : true
+    # config.kassiejones.subscriptions = ::WatConfig.secret_value('KASSIE_JONES_SUBS') || []
 
     ::Sidekiq.configure_server do |config|
       config.server_middleware do |chain|

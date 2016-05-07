@@ -45,6 +45,7 @@ gem 'rack-timeout'
 gem 'tracker_api'
 
 gem 'apohypaton'
+gem 'kassie_jones', path: "/Users/kevin.phillips/org/omada/projects/kassie_jones"
 
 group :production do
   gem 'rails_12factor'
