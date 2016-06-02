@@ -58,7 +58,7 @@ module Wattle
 
     #monitoriiiiing
     require 'statsd'
-    METRICS = Statsd.new(localhost, 8125)
+    METRICS = Statsd.new('localhost', 8125)
 
     ::Sidekiq.configure_server do |config|
       config.server_middleware do |chain|
