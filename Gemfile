@@ -8,6 +8,9 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 1.0.1'
 gem 'httpclient'
 gem 'wat_catcher'#, path: "../wat_catcher"
+gem "sidekiq-pro", source: "https://146f3b44:3e5475c2@gems.contribsys.com/" # for statsd integration
+gem 'dogapi'
+gem 'dogstatsd-ruby'
 gem 'sidekiq_healthcheck'
 gem 'kaminari'
 gem 'kaminari-bootstrap'

@@ -19,6 +19,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: https://146f3b44:3e5475c2@gems.contribsys.com/
   specs:
     actionmailer (4.2.4)
       actionpack (= 4.2.4)
@@ -121,6 +122,9 @@ GEM
     diplomat (0.14.0)
       faraday (~> 0.9)
       json (~> 1.8)
+    dogapi (1.22.0)
+      multi_json
+    dogstatsd-ruby (1.6.0)
     dotenv (2.1.0)
     dotenv-rails (2.1.0)
       dotenv (= 2.1.0)
@@ -346,6 +350,8 @@ GEM
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq-pro (3.2.1)
+      sidekiq (>= 4.0.0)
     sidekiq_healthcheck (0.1.0)
     sinatra (1.4.6)
       rack (~> 1.4)
@@ -418,6 +424,8 @@ DEPENDENCIES
   capistrano-rails
   capybara
   coffee-rails (>= 4.0)
+  dogapi
+  dogstatsd-ruby
   dotenv-rails
   email_spec
   execjs
@@ -458,6 +466,7 @@ DEPENDENCIES
   searchkick
   secrets!
   sidekiq
+  sidekiq-pro!
   sidekiq_healthcheck
   sinatra (>= 1.3.0)
   slim (>= 1.3.0)
@@ -470,4 +479,4 @@ DEPENDENCIES
   wat_catcher
 
 BUNDLED WITH
-   1.10.6
+   1.12.4

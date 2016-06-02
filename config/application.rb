@@ -56,9 +56,15 @@ module Wattle
     config.autoload_paths += %W(#{config.root}/app/workers/concerns)
     config.logger = Logviously.configure(config)
 
+    #monitoriiiiing
+    require 'statsd'
+    METRICS = Statsd.new(localhost, 8125)
+
     ::Sidekiq.configure_server do |config|
       config.server_middleware do |chain|
         chain.add ::WatCatcher::SidekiqMiddleware
+        require 'sidekiq/middleware/server/statsd'
+        chain.add Sidekiq::Middleware::Server::Statsd, :client => METRICS
       end
     end
   end
