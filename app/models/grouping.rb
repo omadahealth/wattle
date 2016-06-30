@@ -209,4 +209,8 @@ class Grouping < ActiveRecord::Base
   def update_sorting(effective_time=nil)
     self.latest_wat_at = effective_time
   end
+
+  def tracker_story_name
+    "Grouping #{id}: #{message} - Users: #{app_user_count} - Wats: #{wats.size}"
+  end
 end

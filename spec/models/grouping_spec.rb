@@ -359,4 +359,17 @@ describe Grouping do
       end
     end
   end
+
+  describe "#tracker_story_name" do
+    let(:grouping) {groupings(:grouping1)}
+
+    subject { grouping.tracker_story_name }
+
+    it "returns the approriate values for the tracker story name" do
+      expect(subject).to include grouping.id.to_s
+      expect(subject).to include grouping.message.to_s
+      expect(subject).to include grouping.app_user_count.to_s
+      expect(subject).to include grouping.wats.size.to_s
+    end
+  end
 end
