@@ -1,0 +1,5 @@
+kairos_daily_updater:
+  cron: "0 3 * * *"
+  class: "DailyGroupingUpdater"
+  args:
+    app_name: "Kairos"
