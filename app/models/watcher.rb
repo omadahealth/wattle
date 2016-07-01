@@ -20,7 +20,7 @@ class Watcher < ActiveRecord::Base
     end
 
     def retrieve_system_account
-      find_or_create_by! name: "System Account", email: ENV['SYSTEM_ACCOUNT_EMAIL'], pivotal_tracker_api_key: ENV['SYSTEM_ACCOUNT_PT_API_KEY']
+      find_or_create_by! name: "System Account", email: WatConfig.secret_value('SYSTEM_ACCOUNT_EMAIL'), pivotal_tracker_api_key: WatConfig.secret_value('SYSTEM_ACCOUNT_PT_API_KEY')
     end
   end
 

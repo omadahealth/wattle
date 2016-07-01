@@ -378,13 +378,17 @@ describe Grouping do
 
     subject { grouping.resolve! }
 
+    it "changes the grouping state" do
+      expect{subject}.to change{grouping.state}.from("unacknowledged").to("resolved")
+    end
+
     context "if there is an associated tracker story" do
       let(:tracker_id) { "some-tracker-id" }
 
       before { grouping.update! pivotal_tracker_story_id: tracker_id }
 
       it "accepts the story and adds a note" do
-        expect(grouping).to receive(:accept_tracker_story).with(tracker_id)
+        expect(grouping).to receive(:accept_tracker_story)
         subject
       end
     end
