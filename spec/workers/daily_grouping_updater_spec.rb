@@ -32,17 +32,6 @@ describe DailyGroupingUpdater do
         expect_any_instance_of(Grouping).not_to receive(:resolve!)
         subject.perform(app_name: "non-existent-app")
       end
-
-      context "if there is an associated tracker story" do
-        let(:tracker_id) { "some-tracker-id" }
-
-        before { acknowledged_grouping.update! pivotal_tracker_story_id: tracker_id }
-
-        it "accepts the story and adds a note" do
-          expect(subject).to receive(:accept_tracker_story).with(tracker_id)
-          subject.perform(app_name: app_name)
-        end
-      end
     end
   end
 end

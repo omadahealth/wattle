@@ -16,6 +16,11 @@ class Grouping < ActiveRecord::Base
 
     event :resolve do
       transition [:deprioritized, :unacknowledged, :acknowledged] => :resolved
+
+    end
+
+    after_transition to: :resolved do |grouping, transition|
+      grouping.accept_tracker_story(grouping.pivotal_tracker_story_id) if grouping.pivotal_tracker_story_id.present?
     end
 
     event :deprioritize do
@@ -212,5 +217,14 @@ class Grouping < ActiveRecord::Base
 
   def tracker_story_name
     "Grouping #{id}: #{message} - Users: #{app_user_count} - Wats: #{wats.size}"
+  end
+
+  def accept_tracker_story(story_id)
+    tracker = Watcher.retrieve_system_account.tracker
+    return unless tracker.present?
+
+    story = tracker.story(story_id)
+    story.update("current_state" => "accepted")
+    story.notes.create(:text => "Accepted since associated wat has been resolved.")
   end
 end

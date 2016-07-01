@@ -361,7 +361,7 @@ describe Grouping do
   end
 
   describe "#tracker_story_name" do
-    let(:grouping) {groupings(:grouping1)}
+    let(:grouping) { groupings(:grouping1) }
 
     subject { grouping.tracker_story_name }
 
@@ -370,6 +370,23 @@ describe Grouping do
       expect(subject).to include grouping.message.to_s
       expect(subject).to include grouping.app_user_count.to_s
       expect(subject).to include grouping.wats.size.to_s
+    end
+  end
+
+  describe "#resolve!" do
+    let(:grouping) { groupings(:grouping1) }
+
+    subject { grouping.resolve! }
+
+    context "if there is an associated tracker story" do
+      let(:tracker_id) { "some-tracker-id" }
+
+      before { grouping.update! pivotal_tracker_story_id: tracker_id }
+
+      it "accepts the story and adds a note" do
+        expect(grouping).to receive(:accept_tracker_story).with(tracker_id)
+        subject
+      end
     end
   end
 end
