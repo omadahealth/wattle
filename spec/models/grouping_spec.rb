@@ -393,4 +393,22 @@ describe Grouping do
       end
     end
   end
+
+  describe ".retrieve_stale_groupings" do
+    let(:acknowledged_grouping) { groupings :acknowledged }
+    let(:resolved_grouping) { groupings :resolved }
+    let(:time_frame) { 5.days.ago }
+
+    subject { described_class.retrieve_stale_groupings(time_frame) }
+
+    before do
+      acknowledged_grouping.update! latest_wat_at: 10.days.ago
+      resolved_grouping.update! latest_wat_at: 10.days.ago
+    end
+
+    it "should retrieve acknowledged wats after the given time frame" do
+      expect(subject).to include acknowledged_grouping
+      expect(subject).not_to include resolved_grouping
+    end
+  end
 end

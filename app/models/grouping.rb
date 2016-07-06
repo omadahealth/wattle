@@ -74,6 +74,7 @@ class Grouping < ActiveRecord::Base
   scope :language, -> (an) { language_non_distinct(an).recursive_distinct('groupings.id') }
   scope :by_user,  -> (user_id) { by_user_non_distinct(user_id).recursive_distinct('groupings.id') }
   scope :by_host,  -> (host)    { by_host_non_distinct(host).recursive_distinct('groupings.id') }
+  scope :retrieve_stale_groupings, -> (time_frame) { where(state: :acknowledged).where("latest_wat_at <= ?", time_frame) }
 
   searchkick(callbacks: false, text_middle: [:key_line, :user_emails], index_name: "#{Rails.application.class.parent_name.downcase}_#{model_name.plural}_#{Rails.env.to_s}")
 
