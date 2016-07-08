@@ -1,4 +1,4 @@
-kairos_daily_updater:
+daily_grouping_updater:
   cron: "0 3 * * *"
   class: "DailyGroupingUpdater"
   args:
