@@ -61,5 +61,27 @@ module Wattle
         chain.add ::WatCatcher::SidekiqMiddleware
       end
     end
+
+    config.after_initialize do
+      sidekiq_service = Apohypaton::Service.new()
+      sidekiq_service.service_type = 'sidekiq'
+      default_sidekiq_checks = sidekiq_service.checks
+      custom_sidekiq_checks = []
+      sidekiq_service.checks = default_sidekiq_checks + custom_sidekiq_checks
+
+      puma_service = Apohypaton::Service.new()
+      puma_service.service_type = 'puma'
+      default_puma_checks = puma_service.checks
+      custom_puma_checks = []
+      puma_service.checks = default_puma_checks + custom_puma_checks
+
+      if ::Sidekiq.server?
+        sidekiq_service.register()
+      end
+
+      if File.exists?('/var/www/wattle/shared/sockets/app.sock')
+        puma_service.register()
+      end
+    end
   end
 end
