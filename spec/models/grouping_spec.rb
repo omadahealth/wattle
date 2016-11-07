@@ -397,21 +397,45 @@ describe Grouping do
       let(:tracker_id) { "some-tracker-id" }
       let(:tracker_stub) { double(:tracker_client) }
       let(:story_stub) { double(:story) }
+      let(:project_stub) { double(:project) }
 
       before { grouping.update! pivotal_tracker_story_id: tracker_id }
 
-      it "accepts the story and adds a note" do
-        expect(grouping).to receive(:accept_tracker_story).and_call_original
-        expect_any_instance_of(Tracker).to receive(:client) { tracker_stub }
-        expect(tracker_stub).to receive(:story).with(tracker_id).and_return(story_stub)
-        expect(story_stub).to receive(:current_state)
-        expect(story_stub).to receive(:current_state=).with("accepted")
-        expect(story_stub).to receive(:save)
-        subject
+      context "for a project that implements auto-resolve" do
+        it "accepts the story and adds a note" do
+          expect(grouping).to receive(:accept_tracker_story).and_call_original
+          expect_any_instance_of(Tracker).to receive(:client) { tracker_stub }
+          expect(tracker_stub).to receive(:story).with(tracker_id).and_return(story_stub)
+
+          expect(story_stub).to receive(:project_id).and_return('garbo_project_id')
+          expect(tracker_stub).to receive(:project).with('garbo_project_id').and_return(project_stub)
+          expect(project_stub).to receive(:name).and_return(Grouping::PROJECTS_WHICH_AUTO_ACCEPT.sample)
+
+          expect(story_stub).to receive(:current_state)
+          expect(story_stub).to receive(:current_state=).with("accepted")
+          expect(story_stub).to receive(:save)
+
+          subject
+        end
+      end
+
+      context "for a project that does not implement auto-resolve" do
+        it "does not accept the story" do
+          expect_any_instance_of(Tracker).to receive(:client) { tracker_stub }
+          expect(tracker_stub).to receive(:story).with(tracker_id).and_return(story_stub)
+
+          expect(story_stub).to receive(:project_id).and_return('garbo_project_id')
+          expect(tracker_stub).to receive(:project).with('garbo_project_id').and_return(project_stub)
+          expect(project_stub).to receive(:name).and_return('Flower')
+
+          expect(grouping).not_to receive(:accept_tracker_story).and_call_original
+
+          subject
+        end
       end
 
       it "gracefully handles errors raised by Tracker" do
-        expect(grouping).to receive(:accept_tracker_story).and_call_original
+        expect(grouping).to_not receive(:accept_tracker_story).and_call_original
         expect_any_instance_of(Tracker).to receive(:client) { tracker_stub }
         allow(tracker_stub).to receive(:story).with(tracker_id).and_raise("oh noes!")
 

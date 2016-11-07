@@ -1,4 +1,6 @@
 class Grouping < ActiveRecord::Base
+  PROJECTS_WHICH_AUTO_ACCEPT = ['Red', 'Blue', 'Omada Chores']
+
   has_paper_trail class_name: "GroupingVersion", :only => [:state]
 
   has_many :wats, inverse_of: :grouping
@@ -16,11 +18,10 @@ class Grouping < ActiveRecord::Base
 
     event :resolve do
       transition [:deprioritized, :unacknowledged, :acknowledged] => :resolved
-
     end
 
     after_transition to: :resolved do |grouping, transition|
-      grouping.accept_tracker_story if grouping.pivotal_tracker_story_id.present?
+      grouping.accept_tracker_story if grouping.should_auto_resolve?
     end
 
     event :deprioritize do
@@ -219,16 +220,28 @@ class Grouping < ActiveRecord::Base
     "Grouping #{id}: #{error_class || message} - Users: #{Grouping.with_timeout_default(5.seconds, "Many") { app_user_count} } - Wats: #{wats.size}"
   end
 
+  def should_auto_resolve?
+    return false unless pivotal_tracker_story_id && tracker_story
+
+    project = tracker.project(tracker_story.project_id)
+    project.name.in? PROJECTS_WHICH_AUTO_ACCEPT
+  end
+
+  def tracker
+    @tracker ||= Watcher.retrieve_system_account.tracker.client
+  end
+
+  def tracker_story
+    @tracker_story ||= tracker.story(pivotal_tracker_story_id)
+    rescue
+  end
+
   def accept_tracker_story
-    tracker = Watcher.retrieve_system_account.tracker.client
     return unless tracker.present?
 
-    story = tracker.story(pivotal_tracker_story_id)
-    return if story.current_state == "accepted"
+    return if tracker_story.current_state == "accepted"
 
-    story.current_state = "accepted"
-    story.save
-
-    rescue
+    tracker_story.current_state = "accepted"
+    tracker_story.save
   end
 end
