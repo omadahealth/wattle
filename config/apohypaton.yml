@@ -21,9 +21,9 @@ common:
 
       - name: "elastic-rails"
         type: "http"
-        notes: "HTTP/1.1 GET / assigned elastic instance every 10s timing-out after 2s"
+        notes: "HTTP/1.1 GET / assigned elastic instance every 20s timing-out after 10s"
         http: "<%= Apohypaton::Kv.load_secret! 'elastic_search/url' %>"
-        interval: "10s"
+        interval: "20s"
 
       - name: "cluster-rails"
         type: "http"
@@ -43,11 +43,10 @@ common:
         timeout: "2s"
 
       - name: "postgresql-sidekiq"
-        notes: "Check TCP connectivity to assigned postgresql instance every 10s timing-out after 2s"
+        notes: "Check TCP connectivity to assigned postgresql instance every 20s timing-out after 10s"
         type: "tcp"
         tcp: "<%= Apohypaton::Kv.load_secret! 'postgresql/host' %>:5432"
-        interval: "10s"
-        timeout: "2s"
+        interval: "20s"
 
       - name: "elastic-sidekiq"
         type: "http"
