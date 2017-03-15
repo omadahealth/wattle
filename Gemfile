@@ -46,6 +46,7 @@ gem 'tracker_api'
 gem 'omada_utils', git: 'git@github.com:omadahealth/omada_utils'
 
 gem 'apohypaton'
+gem 'greek_fire'
 
 group :production do
   gem 'rails_12factor'

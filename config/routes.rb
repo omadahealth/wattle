@@ -19,7 +19,7 @@ Wattle::Application.routes.draw do
   end
   mount WatCatcher::Engine => '/wat_catcher'
   mount SidekiqHealthcheck::Engine, at: '/sidekiq_healthcheck'
-
+  mount GreekFire::Engine => '/metrics'
 
   resources :wats
   resources :watchers do

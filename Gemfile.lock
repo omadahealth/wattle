@@ -175,6 +175,8 @@ GEM
       thor (~> 0.19.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    greek_fire (0.1.0)
+      rails (>= 4.2.0)
     haml (4.0.7)
       tilt
     haml-rails (0.9.0)
@@ -458,6 +460,7 @@ DEPENDENCIES
   execjs
   fixture_builder
   foreman
+  greek_fire
   haml-rails
   health_check
   highcharts-rails
