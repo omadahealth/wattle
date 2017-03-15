@@ -175,7 +175,7 @@ GEM
       thor (~> 0.19.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    greek_fire (0.1.1)
+    greek_fire (0.1.2)
       rails (>= 4.2.0)
     haml (4.0.7)
       tilt
