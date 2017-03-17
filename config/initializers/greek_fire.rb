@@ -1,17 +1,18 @@
 
-GreekFire::Gauge.register "wats_count",  "The number of wats created in the last 10 minutes.", {} do
+GreekFire::Gauge.register "wats_count" do 
   Wat.where('created_at > ?', Time.zone.now.advance(minutes: -10)).count
 end
 
-GreekFire::Gauge.register "sidekiq_queue_latency", "How long has the old job waited for enqueuing", {} do
-  Sidekiq::Queue.all.map do |x|
-    x.latency
-  end.max
+GreekFire::Gauge.register "sidekiq_job_latency",
+                          description: "How long are jobs enqueued",
+                          labels: { :queue => Proc.new { Sidekiq::Queue.all.map(&:name) }} do | labels |
+  Sidekiq::Queue.new(labels[:queue]).latency
 end
 
-GreekFire::Gauge.register "sidekiq_queue_count", "How many jobs are enqueued", {} do
-  Sidekiq::Queue.all.map do |x|
-    x.size
-  end.sum
+
+GreekFire::Gauge.register "sidekiq_job_count",
+                          description: "How many jobs are enqueued",
+                          labels: { :queue => Proc.new { Sidekiq::Queue.all.map(&:name) }} do | labels |
+  Sidekiq::Queue.new(labels[:queue]).size
 end
 
