@@ -20,9 +20,9 @@ GIT
 
 GIT
   remote: git@github.com:omadahealth/omada_utils
-  revision: 6366fd6a6f2052237d16cff2f6554701d67b673d
+  revision: bfac2dfedc71495bd25baa43a7a6ea3183a79cb0
   specs:
-    omada_utils (1.1.0)
+    omada_utils (1.1.1)
       apohypaton (>= 0.4.4)
       aws-sdk (~> 2.8)
       rails (>= 4.0)
