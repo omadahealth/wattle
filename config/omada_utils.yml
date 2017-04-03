@@ -1,2 +1,2 @@
 snapshots:
-  production: "wattle-db-replica.omadahealth.net:/var/lib/postgresql/backups/wattle_production.sqlc"
+  production: "jenkins-cloud.omadahealth.net:/var/lib/jenkins/jobs/Wattle Production snapshot/lastSuccessful/archive/wattle_production.sqlc"
