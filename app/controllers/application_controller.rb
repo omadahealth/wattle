@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   rescue_from RateLimitExceeded do
     respond_to do |format|
       format.json  { render :json => ["Rate Limit Exceeded"], status: 429 }
-      format.any   { render :text => "Rate Limit Exceeded", status: 429 }
+      format.any   { render :text => "Rate Limit Exceeded.  Please wait 1 minute and try again.", status: 429 }
     end
   end
 

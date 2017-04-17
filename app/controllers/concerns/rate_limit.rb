@@ -11,9 +11,9 @@ module RateLimit
     key_name = "ratelimit_#{rate_limit_key}"
 
     lock_count = $redis.incr(key_name)
-    $redis.expire(key_name, 5.minutes)
+    $redis.expire(key_name, 1.minutes)
 
-    if lock_count > 3
+    if lock_count > 5
       raise RateLimitExceeded.new("Current concurrency of #{lock_count} is greater than the 3 allowed.")
     end
 
