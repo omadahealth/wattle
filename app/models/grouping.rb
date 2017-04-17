@@ -91,7 +91,7 @@ class Grouping < ActiveRecord::Base
       hostname: wats.group(:hostname).count.keys,
       language: language,
       user_emails: app_user_stats(filters: {}, key_name: :email,  limit: 1000).keys,
-      user_ids: app_user_stats(filters: {}, key_name: :id).keys,
+      user_ids: app_user_stats(filters: {}, key_name: :id, limit: 1000).keys,
       latest_wat_at: latest_wat_at
     }
   end
